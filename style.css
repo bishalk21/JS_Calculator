@@ -29,6 +29,7 @@ body {
     padding: 7px;
     box-shadow: -4px 4px 10px 0 rgba(0, 0, 0, 0.904);
 
+    z-index: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -62,6 +63,7 @@ body {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    /* z-index: 1; */
 }
 
 .btn-area>div:hover {
@@ -79,4 +81,55 @@ body {
 
 .title {
     margin-bottom: 25px;
+}
+
+
+.circle {
+    background: radial-gradient(50% 50% at 50% 50%,
+            #f7f5f7 0%,
+            rgba(144, 201, 69, 0.76) 0.01%,
+            rgba(24, 167, 69, 0.74) 26.04%,
+            rgba(5, 239, 56, 0.76) 63.54%,
+            rgba(234, 232, 232, 0.83) 100%);
+    border-radius: 100%;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    /* top: -250px; */
+    /* left: -50px; */
+    left: calc(50% - 210px);
+
+    bottom: calc(50% - 330px);
+    /* bottom: -35px; */
+    /* z-index: -1; */
+}
+
+
+.prank {
+    color: red;
+    animation-name: bounce 1s ease-in;
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateX(10px);
+    }
+
+    20% {
+        transform: translateX(-10px);
+        color: red;
+    }
+
+    50% {
+        transform: translateX(-10px);
+    }
+
+    75% {
+        transform: translateX(-10px);
+        color: green;
+    }
+
+    100% {
+        transform: translateX(-10px);
+    }
 }
