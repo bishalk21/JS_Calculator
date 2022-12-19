@@ -1,80 +1,95 @@
 const buttons = document.querySelectorAll(".btns-area>div");
-// console.log(buttons);
+// 1. node list to array
+const btnArr = Array.from(buttons);
 
-// to convert buttons node list to array we use Array.from() or spread operator or Array.prototype.slice.call()
-const buttonsArray = Array.from(buttons);
-// console.log(buttonsArray);
-
-const displaySec = document.querySelector(".display");
-let displayValue = "";
+const display = document.querySelector(".display");
+let displayStr = "";
 
 let operators = ["+", "-", "*", "/"];
 let lastOperator = "";
 
-// forEach method is used to iterate over an array and call a function for each element in the array
-buttonsArray.forEach((button) => {
-  button.addEventListener("click", function () {
-    const value = button.innerText;
-    // console.log(value);
-    displaySec.innerText = value;
+// 2. Loop through the array of buttons
+btnArr.forEach((btn) => {
+  // 3. add event listener to each button
+  btn.addEventListener("click", () => {
+    //4. GET the value of the button
+    const btnVal = btn.innerText;
+    display.innerText = btnVal; // assign the value to the display
 
-    if (value === "AC") {
-      displayValue = "";
-      display(displayValue);
+    // 7. clear the display
+    if (btnVal === "AC") {
+      displayStr = "";
+      displayElm();
       return;
     }
 
-    if (value === "C") {
-      // slice method is used to extract a part of a string and return the extracted part in a new strin4
-      displayValue = displayValue.slice(0, -1);
-      display(displayValue);
+    // 8. delete the last character
+    if (btnVal === "C") {
+      displayStr = displayStr.slice(0, -1);
+      displayElm(displayStr);
       return;
     }
 
-    if (operators.includes(value)) {
-      lastOperator = value;
-      // console.log(lastOperator);
-
-      let lastChar = displayValue[displayValue.length - 1];
-      // console.log(lastChar);
+    // 9. check if the value is an operator
+    if (operators.includes(btnVal)) {
+      // assign the value to the lastOperator
+      lastOperator = btnVal;
+      // check if the last character is an operator
+      let lastChar = displayStr[displayStr.length - 1];
       if (operators.includes(lastChar)) {
-        displayValue = displayValue.slice(0, -1);
-        displayValue += value;
-        display(displayValue);
+        // slice the last character
+        displayStr = displayStr.slice(0, -1);
+        // add the new operator
+        displayStr += btnVal;
+        displayElm(displayStr);
         return;
       }
     }
 
-    if (value === ".") {
+    // 10. check if the value is dot (.)
+    if (btnVal === ".") {
+      // check for the last operator
       if (lastOperator) {
-        const operatorIndex = displayValue.lastIndexOf(lastOperator);
-        // console.log(operatorIndex); //098+. --> 3
-        const lastNumberSet = displayValue.slice(operatorIndex + 1);
-        // console.log(lastNumberSet); //4 --> .
-        if (lastNumberSet.includes(".")) return;
+        // get the index of the last operator
+        let lastOperatorIndex = displayStr.lastIndexOf(lastOperator);
+        // get the string after the last operator
+        let strAfterLastOperator = displayStr.slice(lastOperatorIndex + 1);
+        // check if the string after the last operator includes dot
+        if (strAfterLastOperator.includes(".")) {
+          return;
+        }
       }
-      if (!lastOperator && displayValue.includes(".")) return;
+      // check if the display string includes dot
+      if (!lastOperator && displayStr.includes(".")) {
+        return;
+      }
     }
 
-    if (value === "=") {
-      const lastChar = displayValue[displayValue.length - 1];
+    // 12. check if the value is equal (=)
+    if (btnVal === "=") {
+      // check if the last character is an operator
+      let lastChar = displayStr[displayStr.length - 1];
       if (operators.includes(lastChar)) {
-        displayValue = displayValue.slice(0, -1);
+        return;
       }
-      return total();
+      total();
+      return;
     }
 
-    displayValue += value;
-    display(displayValue);
+    // 5. store the value in a variable
+    displayStr += btnVal;
+    // 6. display the value on the screen
+    displayElm(displayStr);
   });
 });
 
-const display = (str) => {
-  displaySec.innerText = str || "0.00";
+const displayElm = (str) => {
+  display.innerText = str || "0.00";
 };
 
+// 11. calculate the value
 const total = () => {
-  const ttl = eval(displayValue);
-  displayValue = ttl.toFixed(2).toString();
-  display(displayValue);
+  let total = eval(displayStr);
+  let totalStr = total.toFixed(2).toString();
+  displayElm(totalStr);
 };
